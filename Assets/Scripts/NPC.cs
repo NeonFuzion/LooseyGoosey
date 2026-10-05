@@ -43,7 +43,7 @@ public class QuestData : ScriptableObject
 {
     public string Name;
     public QuestState CurrentState;
-    public Recipe Recipe;
+    public ItemSO Item;
 }
 
 public enum QuestState { None, NotStarted, InProgress, Complete }

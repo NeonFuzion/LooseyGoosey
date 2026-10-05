@@ -66,6 +66,8 @@ public class QuestProgressNode : Node
     {
         context.AddInputPort("in").Build();
         context.AddOutputPort("out").Build();
+
+        context.AddInputPort<ItemSO>("Item").Build();
     }
 }
 

@@ -24,14 +24,18 @@ public class Checklist : MonoBehaviour
         
     }
 
-    public void CreateNewChecklist(Recipe recipe)
+    public void CreateNewChecklist(ItemSO item)
     {
-        titleText.SetText(recipe.Item.Name);
+        titleText.SetText(item.Name);
 
-        foreach (ItemToCount ingredient in recipe.Ingredients)
+        foreach (Transform child in ingredientParent)
+        {
+            Destroy(child.gameObject);
+        }
+        foreach (ItemToCount ingredient in item.Ingredients)
         {
             GameObject checklistItem = Instantiate(checklistItemPrefab, ingredientParent);
-            checklistItem.GetComponentInChildren<TextMeshProUGUI>().SetText($"- {ingredient.Item} x{ingredient.Count}");
+            checklistItem.GetComponent<TextMeshProUGUI>().SetText($"- {ingredient.Item} x{ingredient.Count}");
         }
 
         animator.CrossFade(appearAnimationHash, 0, 0);

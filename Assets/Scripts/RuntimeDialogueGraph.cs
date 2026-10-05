@@ -40,6 +40,7 @@ public class ChoiceData
 public class RuntimeQuestProgressNode
 {
     public string NodeID, NextNodeID;
+    public ItemSO Item;
 }
 
 [System.Serializable]

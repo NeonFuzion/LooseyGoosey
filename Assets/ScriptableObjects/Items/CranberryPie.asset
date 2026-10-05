@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f1b8cef4399ddc449d5946b2196e3bf, type: 3}
+  m_Name: CranberryPie
+  m_EditorClassIdentifier: Assembly-CSharp::ItemSO
+  <Sprite>k__BackingField: {fileID: 0}
+  <Name>k__BackingField: Cranberry Pie
+  <Ingredients>k__BackingField:
+  - Item: {fileID: 11400000, guid: 9d4db47227b043043b0c3b1d6efa090f, type: 2}
+    Count: 3
+  - Item: {fileID: 11400000, guid: 57507135cdfe344479a0d10d902f225f, type: 2}
+    Count: 2

@@ -18,7 +18,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] Transform ChoiceButtonParent;
 
     [Header("Quest UI")]
-    [SerializeField] GameObject QuestPanel;
+    [SerializeField] Checklist checklist;
 
     [Header("Events")]
     [SerializeField] UnityEvent onDialogueStarted;
@@ -54,18 +54,6 @@ public class DialogueManager : MonoBehaviour
     void ShowNode(string nodeID)
     {
         _currentNode = _nodeLookup[nodeID];
-        DialogueText.SetText(_currentNode.DialogueText);
-
-        if (_currentNode.Speaker is Speaker speaker)
-        {
-            SpeakerPanel.SetActive(true);
-            SpeakerNameText.SetText(speaker.Name);
-            SpeakerSprite.sprite = speaker.Sprite;
-        }
-        else
-        {
-            SpeakerPanel.SetActive(false);
-        }
 
         switch (_currentNode)
         {
@@ -80,11 +68,24 @@ public class DialogueManager : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+
+        DialogueText.SetText(_currentNode.DialogueText);
+        if (_currentNode.Speaker is Speaker speaker)
+        {
+            SpeakerPanel.SetActive(true);
+            SpeakerNameText.SetText(speaker.Name);
+            SpeakerSprite.sprite = speaker.Sprite;
+        }
+        else
+        {
+            SpeakerPanel.SetActive(false);
+        }
     }
 
     void ShowQuestProgressNode(RuntimeQuestProgressNode questProgressNode)
     {
-        
+        checklist.CreateNewChecklist(questProgressNode.Item);
+
     }
 
     void ShowChoiceNode(RuntimeChoiceNode choiceNode)

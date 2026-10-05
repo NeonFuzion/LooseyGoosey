@@ -59,6 +59,8 @@ public class DialogueGraphImporter : ScriptedImporter
         RuntimeQuestProgressNode runtimeNode = new () { NodeID = nodeID };
         runtimeGraph.QuestProgressNodes.Add(runtimeNode);
 
+        runtimeNode.Item = GetPortValue<ItemSO>(node.GetInputPortByName("Item"));
+
         if (node.GetOutputPortByName("out").FirstConnectedPort is IPort nextNodePort)
             runtimeNode.NextNodeID = nodeIDMap[nextNodePort.GetNode()];
     }
