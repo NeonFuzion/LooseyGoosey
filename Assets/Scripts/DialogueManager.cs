@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -39,7 +40,7 @@ public class DialogueManager : MonoBehaviour
         
     }
 
-    void ProcessDialogueNode(string nodeID)
+    void ProcessRuntimeNode(string nodeID)
     {
         if (!string.IsNullOrEmpty(nodeID) && _nodeLookup.ContainsKey(nodeID))
         {
@@ -55,22 +56,24 @@ public class DialogueManager : MonoBehaviour
     {
         _currentNode = _nodeLookup[nodeID];
 
-        switch (_currentNode)
-        {
-            case RuntimeDialogueNode dialogueNode: ShowDialogueNode(dialogueNode); break;
-            case RuntimeChoiceNode choiceNode: ShowChoiceNode(choiceNode); break;
-        }
-    }
-
-    void ShowDialogueNode(RuntimeDialogueNode dialogueNode)
-    {
         foreach (Transform child in ChoiceButtonParent)
         {
             Destroy(child.gameObject);
         }
 
-        DialogueText.SetText(_currentNode.DialogueText);
-        if (_currentNode.Speaker is Speaker speaker)
+        if (_currentNode is RuntimeDialogueNode dialogueNode) ShowDialogueNode(dialogueNode);
+        switch (_currentNode)
+        {
+            case RuntimeChoiceNode choiceNode: ShowChoiceNode(choiceNode); break;
+            case RuntimeQuestProgressNode questProgressNode: ShowQuestProgressNode(questProgressNode); break;
+            case RuntimeItemCheckNode itemCheckNode: ShowItemCheckNode(itemCheckNode); break;
+        }
+    }
+
+    void ShowDialogueNode(RuntimeDialogueNode dialogueNode)
+    {
+        DialogueText.SetText(dialogueNode.DialogueText);
+        if (dialogueNode.Speaker is Speaker speaker)
         {
             SpeakerPanel.SetActive(true);
             SpeakerNameText.SetText(speaker.Name);
@@ -82,28 +85,48 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    void ShowQuestProgressNode(RuntimeQuestProgressNode questProgressNode)
-    {
-        checklist.CreateNewChecklist(questProgressNode.Item);
-
-    }
-
     void ShowChoiceNode(RuntimeChoiceNode choiceNode)
     {
-        foreach (Transform child in ChoiceButtonParent)
-        {
-            Destroy(child.gameObject);
-        }
         foreach (ChoiceData choice in choiceNode.Choices)
         {
             GameObject buttonGameObject = Instantiate(ChoiceButtonPrefab, ChoiceButtonParent);
 
             Button button = buttonGameObject.GetComponent<Button>();
-            button.onClick.AddListener(() => ProcessDialogueNode(choice.DestinationNodeID));
+            button.onClick.AddListener(() => ProcessRuntimeNode(choice.DestinationNodeID));
 
             TextMeshProUGUI textMeshPro = button.GetComponentInChildren<TextMeshProUGUI>();
             textMeshPro.SetText(choice.ChoiceText);
         }
+    }
+
+    void ShowQuestProgressNode(RuntimeQuestProgressNode questProgressNode)
+    {
+        QuestSO quest = questProgressNode.Quest;
+        if (checklist.IsVisible)
+        {
+            checklist.HideChecklist();
+            ProcessRuntimeNode(questProgressNode.NextNodeID);
+        }
+        else
+        {
+            checklist.CreateNewChecklist(quest, QuestState.NotStarted);
+        }
+        QuestManager.Instance.UpdateQuest(quest);
+    }
+
+    void ShowItemCheckNode(RuntimeItemCheckNode itemCheckNode)
+    {
+        string nextNodeID = itemCheckNode.SuccessNodeID;
+        foreach (ItemToCount item in itemCheckNode.Ingredients)
+        {
+            if (Player.InventoryInstance.GetItemCount(item.Item) >= item.Count) continue;
+            nextNodeID = itemCheckNode.FailNodeID;
+            break;
+        }
+
+        GameObject button = Instantiate(ChoiceButtonPrefab, ChoiceButtonParent);
+        button.GetComponentInChildren<TextMeshProUGUI>().SetText("Submit");
+        button.GetComponent<Button>().onClick.AddListener(() => ProcessRuntimeNode(nextNodeID));
     }
 
     void EndDialogue()
@@ -121,7 +144,7 @@ public class DialogueManager : MonoBehaviour
 
     public void StartDialogue(RuntimeDialogueGraph runtimeGraph)
     {
-        foreach (RuntimeDialogueNode node in runtimeGraph.DialogueNodes)
+        foreach (RuntimeDirectNode node in runtimeGraph.DialogueNodes)
         {
             _nodeLookup[node.NodeID] = node;
         }
@@ -129,17 +152,26 @@ public class DialogueManager : MonoBehaviour
         {
             _nodeLookup[node.NodeID] = node;
         }
+        foreach (RuntimeItemCheckNode node in runtimeGraph.ItemCheckNodes)
+        {
+            _nodeLookup[node.NodeID] = node;
+        }
+        foreach (RuntimeQuestProgressNode node in runtimeGraph.QuestProgressNodes)
+        {
+            _nodeLookup[node.NodeID] = node;
+        }
 
         DialoguePanel.SetActive(true);
         onDialogueStarted?.Invoke();
-        ProcessDialogueNode(runtimeGraph.EntryNodeID);
+        ProcessRuntimeNode(runtimeGraph.EntryNodeID);
     }
 
     public void HandleContinueDialogueInput()
     {
-        if (_currentNode is RuntimeDialogueNode dialogueNode)
+        switch (_currentNode)
         {
-            ProcessDialogueNode(dialogueNode.NextNodeID);
+            case RuntimeDirectNode dialogueNode: ProcessRuntimeNode(dialogueNode.NextNodeID); break;
+            case RuntimeQuestProgressNode progressNode: ShowQuestProgressNode(progressNode); break;
         }
     }
 
@@ -147,7 +179,7 @@ public class DialogueManager : MonoBehaviour
     {
         if (_currentNode is RuntimeChoiceNode choiceNode)
         {
-            ProcessDialogueNode(choiceNode.Choices.Last().DestinationNodeID);
+            ProcessRuntimeNode(choiceNode.Choices.Last().DestinationNodeID);
         }
     }
 }

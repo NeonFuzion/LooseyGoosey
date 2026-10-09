@@ -10,6 +10,8 @@ public class Inventory : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        items = new Dictionary<ItemSO, int>();
+
         foreach (ItemToCount itemPair in startItems)
         {
             AddItem(itemPair.Item, itemPair.Count);
@@ -41,6 +43,12 @@ public class Inventory : MonoBehaviour
         else if (items[item] == 0) items.Remove(item);
         else items[item] -= amount;
         return true;
+    }
+
+    public int GetItemCount(ItemSO item)
+    {
+        if (!items.ContainsKey(item)) return 0;
+        return items[item];
     }
 }
 

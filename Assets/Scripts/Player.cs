@@ -3,13 +3,16 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
+    public static Inventory InventoryInstance;
+
     [SerializeField] float detectRadius;
     [SerializeField] LayerMask interactableLayers;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        if (InventoryInstance) Destroy(InventoryInstance);
+        InventoryInstance = GetComponent<Inventory>();
     }
 
     // Update is called once per frame

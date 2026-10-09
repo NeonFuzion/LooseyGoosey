@@ -59,7 +59,7 @@ public class DialogueGraphImporter : ScriptedImporter
         RuntimeQuestProgressNode runtimeNode = new () { NodeID = nodeID };
         runtimeGraph.QuestProgressNodes.Add(runtimeNode);
 
-        runtimeNode.Item = GetPortValue<ItemSO>(node.GetInputPortByName("Item"));
+        runtimeNode.Quest = GetPortValue<QuestSO>(node.GetInputPortByName("Quest"));
 
         if (node.GetOutputPortByName("out").FirstConnectedPort is IPort nextNodePort)
             runtimeNode.NextNodeID = nodeIDMap[nextNodePort.GetNode()];
@@ -67,7 +67,7 @@ public class DialogueGraphImporter : ScriptedImporter
 
     private void ProcessDialogueNode(DialogueNode node, string nodeID, Dictionary<INode, string> nodeIDMap, RuntimeDialogueGraph runtimeGraph)
     {
-        RuntimeDialogueNode runtimeNode = new () { NodeID = nodeID };
+        RuntimeDirectNode runtimeNode = new () { NodeID = nodeID };
         runtimeGraph.DialogueNodes.Add(runtimeNode);
 
         runtimeNode.Speaker = GetPortValue<Speaker>(node.GetInputPortByName("Speaker"));
@@ -89,7 +89,7 @@ public class DialogueGraphImporter : ScriptedImporter
         {
             if (!outputPort.Name.StartsWith("out")) continue;
             string index = outputPort.Name.Split(" ")[1];
-            IPort textPort = node.GetInputPortByName($"Choice text {index}");
+            IPort textPort = node.GetInputPortByName($"Choice Text {index}");
 
             ChoiceData choiceData = new ()
             {

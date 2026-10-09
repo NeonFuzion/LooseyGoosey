@@ -486,9 +486,9 @@ MonoBehaviour:
         m_State: 0
         m_InputConstantsById:
           m_KeyList:
-          - Item
+          - Quest
           m_ValueList:
-          - rid: 4866833323029168213
+          - rid: 4866833376025772111
         m_InputPortInfos:
           expandedPortsById:
             m_KeyList: []
@@ -734,10 +734,10 @@ MonoBehaviour:
       type: {class: 'Constant`1[[System.Int32, mscorlib]]', ns: Unity.GraphToolkit.Editor, asm: UnityEditor.GraphToolkitModule}
       data:
         m_Value: 2
-    - rid: 4866833323029168213
-      type: {class: 'Constant`1[[ItemSO, Assembly-CSharp]]', ns: Unity.GraphToolkit.Editor, asm: UnityEditor.GraphToolkitModule}
+    - rid: 4866833376025772111
+      type: {class: 'Constant`1[[QuestSO, Assembly-CSharp]]', ns: Unity.GraphToolkit.Editor, asm: UnityEditor.GraphToolkitModule}
       data:
-        m_Value: {fileID: 11400000, guid: 0c5c5fb60a4d393459c1f0dcc7585bcf, type: 2}
+        m_Value: {fileID: 11400000, guid: f4ab512b1ceb66c41863cc7f39046af3, type: 2}
     - rid: 7798443050583457870
       type: {class: GraphModelImp, ns: Unity.GraphToolkit.Editor.Implementation, asm: UnityEditor.GraphToolkitModule}
       data:
@@ -781,9 +781,9 @@ MonoBehaviour:
         m_LastKnownBounds:
           serializedVersion: 2
           x: -74
-          y: -95.2
+          y: -94
           width: 2280
-          height: 768.4
+          height: 767.2
         m_GraphElementMetaData:
         - m_Guid:
             m_Value0: 8848896058589005846
@@ -1068,7 +1068,7 @@ MonoBehaviour:
           serializedVersion: 2
           Hash: 3777146f691a297cce9421a7604f3e20
         m_Version: 2
-        m_Position: {x: 1716.7566, y: -95.23334}
+        m_Position: {x: 1758.1245, y: -94.01663}
         m_Title: 
         m_Tooltip: 
         m_NodePreviewModel:

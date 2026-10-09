@@ -2,14 +2,16 @@ using UnityEngine;
 
 public class NPC : MonoBehaviour
 {
+    [SerializeField] bool hasQuest;
     [SerializeField] RuntimeDialogueGraph idleDialogueGraph;
     [SerializeField] QuestDialogue questDialogue;
-    [SerializeField] QuestData questData;
+    [SerializeField] QuestSO[] questData;
+    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        questData.CurrentState = QuestState.NotStarted;
+        if (hasQuest) QuestManager.Instance.UpdateQuest(questData[0]);
     }
 
     // Update is called once per frame
@@ -20,7 +22,7 @@ public class NPC : MonoBehaviour
 
     public void OnInteract()
     {
-        RuntimeDialogueGraph dialogueGraph = questData.CurrentState switch
+        RuntimeDialogueGraph dialogueGraph = QuestManager.Instance.GetQuestState(questData[0]) switch
         {
             QuestState.NotStarted => questDialogue.StartQuestDialogue,
             QuestState.InProgress => questDialogue.InProgressQuestDialogue,
@@ -37,13 +39,3 @@ public struct QuestDialogue
     [field: SerializeField] public RuntimeDialogueGraph StartQuestDialogue { get; private set; }
     [field: SerializeField] public RuntimeDialogueGraph InProgressQuestDialogue { get; private set; }
 }
-
-[CreateAssetMenu(menuName = "Quest")]
-public class QuestData : ScriptableObject
-{
-    public string Name;
-    public QuestState CurrentState;
-    public ItemSO Item;
-}
-
-public enum QuestState { None, NotStarted, InProgress, Complete }

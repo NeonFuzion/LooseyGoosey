@@ -348,7 +348,7 @@ GameObject:
   - component: {fileID: 161234664}
   - component: {fileID: 161234663}
   m_Layer: 6
-  m_Name: Square
+  m_Name: Rui
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -366,11 +366,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1700528cd2f50d468f754ef811efb47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPC
-  idleDialogueGraph: {fileID: 0}
+  hasQuest: 1
+  idleDialogueGraph: {fileID: 3965311268370046156, guid: 493708b59d9577d4f9aa93d4879d7b0c, type: 3}
   questDialogue:
-    <StartQuestDialogue>k__BackingField: {fileID: 0}
-    <InProgressQuestDialogue>k__BackingField: {fileID: 0}
-  questData: {fileID: 0}
+    <StartQuestDialogue>k__BackingField: {fileID: 3965311268370046156, guid: 31b4229a6942aeb48a90feef5a4d7d33, type: 3}
+    <InProgressQuestDialogue>k__BackingField: {fileID: 3965311268370046156, guid: 20b484d6467239349ba7505e64e29e1c, type: 3}
+  questData:
+  - {fileID: 11400000, guid: f4ab512b1ceb66c41863cc7f39046af3, type: 2}
 --- !u!114 &161234660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1029,6 +1031,7 @@ GameObject:
   m_Component:
   - component: {fileID: 765806238}
   - component: {fileID: 765806239}
+  - component: {fileID: 765806240}
   m_Layer: 0
   m_Name: StaticManager
   m_TagString: Untagged
@@ -1084,6 +1087,18 @@ MonoBehaviour:
   OnRemoveItems:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &765806240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 765806237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 676e94220cd415c4fae2ce33964a6e8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuestManager
 --- !u!1 &857101898
 GameObject:
   m_ObjectHideFlags: 0
@@ -1454,7 +1469,7 @@ GameObject:
   - component: {fileID: 1254130574}
   - component: {fileID: 1254130575}
   m_Layer: 0
-  m_Name: Player
+  m_Name: Poya
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2156,7 +2171,7 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
+  m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
@@ -2167,8 +2182,8 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 519420032}
-  - {fileID: 619394802}
   - {fileID: 1254130568}
+  - {fileID: 619394802}
   - {fileID: 940241773}
   - {fileID: 345558896}
   - {fileID: 765806238}
