@@ -79,6 +79,7 @@ public class ItemCheckNode : Node
     protected override void OnDefinePorts(IPortDefinitionContext context)
     {
         context.AddInputPort("in").Build();
+        context.AddInputPort<string>("Checklist title");
         context.AddOutputPort("out Success").Build();
         context.AddOutputPort("out Fail").Build();
 

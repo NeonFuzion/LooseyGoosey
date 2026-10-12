@@ -194,7 +194,7 @@ MonoBehaviour:
     - rid: 4866833273342918741
       type: {class: 'Constant`1[[System.String, mscorlib]]', ns: Unity.GraphToolkit.Editor, asm: UnityEditor.GraphToolkitModule}
       data:
-        m_Value: Do you have supplies for the Cranberry Pie
+        m_Value: Do you have supplies for the Cranberry Pie?
     - rid: 4866833273342918744
       type: {class: ChoiceNode, ns: , asm: Assembly-CSharp-Editor}
       data: 
@@ -594,12 +594,14 @@ MonoBehaviour:
           - Ingredient 1
           - Amount 0
           - Amount 1
+          - Checklist title
           m_ValueList:
           - rid: 4866833307314946146
           - rid: 4866833307314946160
           - rid: 4866833307314946161
           - rid: 4866833307314946162
           - rid: 4866833307314946163
+          - rid: 4866833461053227089
         m_InputPortInfos:
           expandedPortsById:
             m_KeyList: []
@@ -738,6 +740,10 @@ MonoBehaviour:
       type: {class: 'Constant`1[[QuestSO, Assembly-CSharp]]', ns: Unity.GraphToolkit.Editor, asm: UnityEditor.GraphToolkitModule}
       data:
         m_Value: {fileID: 11400000, guid: f4ab512b1ceb66c41863cc7f39046af3, type: 2}
+    - rid: 4866833461053227089
+      type: {class: 'Constant`1[[System.String, mscorlib]]', ns: Unity.GraphToolkit.Editor, asm: UnityEditor.GraphToolkitModule}
+      data:
+        m_Value: Cranberry Pie
     - rid: 7798443050583457870
       type: {class: GraphModelImp, ns: Unity.GraphToolkit.Editor.Implementation, asm: UnityEditor.GraphToolkitModule}
       data:

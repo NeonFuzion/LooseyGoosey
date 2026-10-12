@@ -40,6 +40,13 @@ public class DialogueManager : MonoBehaviour
         
     }
 
+    void CreateButton(string text, UnityAction unityAction)
+    {
+        GameObject button = Instantiate(ChoiceButtonPrefab, ChoiceButtonParent);
+        button.GetComponentInChildren<TextMeshProUGUI>().SetText(text);
+        button.GetComponent<Button>().onClick.AddListener(unityAction);
+    }
+
     void ProcessRuntimeNode(string nodeID)
     {
         if (!string.IsNullOrEmpty(nodeID) && _nodeLookup.ContainsKey(nodeID))
@@ -89,13 +96,7 @@ public class DialogueManager : MonoBehaviour
     {
         foreach (ChoiceData choice in choiceNode.Choices)
         {
-            GameObject buttonGameObject = Instantiate(ChoiceButtonPrefab, ChoiceButtonParent);
-
-            Button button = buttonGameObject.GetComponent<Button>();
-            button.onClick.AddListener(() => ProcessRuntimeNode(choice.DestinationNodeID));
-
-            TextMeshProUGUI textMeshPro = button.GetComponentInChildren<TextMeshProUGUI>();
-            textMeshPro.SetText(choice.ChoiceText);
+            CreateButton(choice.ChoiceText, () => ProcessRuntimeNode(choice.DestinationNodeID));
         }
     }
 
@@ -109,9 +110,9 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
-            checklist.CreateNewChecklist(quest, QuestState.NotStarted);
+            checklist.CreateNewChecklist(quest.Name, quest.Tasks[0].Goods, QuestState.NotStarted);
+            QuestManager.Instance.UpdateQuest(quest);
         }
-        QuestManager.Instance.UpdateQuest(quest);
     }
 
     void ShowItemCheckNode(RuntimeItemCheckNode itemCheckNode)
@@ -124,9 +125,19 @@ public class DialogueManager : MonoBehaviour
             break;
         }
 
-        GameObject button = Instantiate(ChoiceButtonPrefab, ChoiceButtonParent);
-        button.GetComponentInChildren<TextMeshProUGUI>().SetText("Submit");
-        button.GetComponent<Button>().onClick.AddListener(() => ProcessRuntimeNode(nextNodeID));
+        checklist.CreateNewChecklist(itemCheckNode.ChecklistTitle, itemCheckNode.Ingredients.ToArray(), QuestState.InProgress);
+
+        CreateButton("Submit", () =>
+        {
+            checklist.HideChecklist();
+            ProcessRuntimeNode(nextNodeID);
+        });
+
+        CreateButton("Decline", () =>
+        {
+            checklist.HideChecklist();
+            ProcessRuntimeNode(itemCheckNode.FailNodeID);
+        });
     }
 
     void EndDialogue()

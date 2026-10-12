@@ -105,12 +105,13 @@ public class DialogueGraphImporter : ScriptedImporter
     {
         RuntimeItemCheckNode runtimeNode = new () { NodeID = nodeID };
         runtimeGraph.ItemCheckNodes.Add(runtimeNode);
-        
 
+        runtimeNode.ChecklistTitle = GetPortValue<string>(node.GetInputPortByName("Checklist title"));
+        
+        ItemToCount itemPair = new ItemToCount();
         foreach (IPort inputPorts in node.GetInputPorts())
         {
             string[] nameParts = inputPorts.Name.Split(" ");
-            ItemToCount itemPair = new ItemToCount();
             switch (nameParts[0])
             {
                 case "Ingredient": 
@@ -124,7 +125,7 @@ public class DialogueGraphImporter : ScriptedImporter
                     itemPair.Count = GetPortValue<int>(amountTextPort);
                     
                     runtimeNode.Ingredients.Add(itemPair);
-                    itemPair = null;
+                    itemPair = new ItemToCount();
                     break;
             }
         }

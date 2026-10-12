@@ -23,9 +23,15 @@ public class Player : MonoBehaviour
 
     public void HandleInteractInput()
     {
-        Collider2D collider = Physics2D.OverlapCircle(transform.position, detectRadius, interactableLayers);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, detectRadius, interactableLayers);
 
-        if (!collider) return;
-        collider.GetComponent<Interactable>().InvokeOnInteract();
+        if (colliders.Length == 0) return;
+        foreach (Collider2D collider in colliders)
+        {
+            Interactable interactable = collider.GetComponent<Interactable>();
+
+            if (!interactable.enabled) continue;
+            interactable.InvokeOnInteract();
+        }
     }
 }

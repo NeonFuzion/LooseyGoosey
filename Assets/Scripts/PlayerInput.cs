@@ -2,17 +2,21 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
-public class PlayerInput : MonoBehaviour, PlayerInputActions.IDialogueActions, PlayerInputActions.IGeneralActions
+public class PlayerInput : MonoBehaviour, PlayerInputActions.IDialogueActions, PlayerInputActions.IGeneralActions, PlayerInputActions.IInventoryActions
 {
     [Header("General")]
     [SerializeField] UnityEvent onDash;
     [SerializeField] UnityEvent onInteract;
+    [SerializeField] UnityEvent onOpenInventory;
     [SerializeField] UnityEvent<Vector2> onMovement;
 
     [Header("Dialogue")]
     [SerializeField] UnityEvent onContinue;
     [SerializeField] UnityEvent onDecline;
     [SerializeField] UnityEvent<Vector2> onChangeSelection;
+
+    [Header("Inventory")]
+    [SerializeField] UnityEvent onCloseInventory;
 
     PlayerInputActions inputActions;
 
@@ -22,6 +26,7 @@ public class PlayerInput : MonoBehaviour, PlayerInputActions.IDialogueActions, P
 
         inputActions.General.SetCallbacks(this);
         inputActions.Dialogue.SetCallbacks(this);
+        inputActions.Inventory.SetCallbacks(this);
 
         inputActions.General.Enable();
     }
@@ -82,5 +87,21 @@ public class PlayerInput : MonoBehaviour, PlayerInputActions.IDialogueActions, P
     public void OnChangeSelection(InputAction.CallbackContext context)
     {
         onChangeSelection?.Invoke(context.ReadValue<Vector2>());
+    }
+
+    public void OnInventory(InputAction.CallbackContext context)
+    {
+        if (!context.started) return;
+        inputActions.General.Disable();
+        inputActions.Inventory.Enable();
+        onOpenInventory?.Invoke();
+    }
+
+    public void OnClose(InputAction.CallbackContext context)
+    {
+        if (!context.started) return;
+        inputActions.General.Enable();
+        inputActions.Inventory.Disable();
+        onCloseInventory?.Invoke();
     }
 }

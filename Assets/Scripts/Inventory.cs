@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
@@ -49,6 +50,21 @@ public class Inventory : MonoBehaviour
     {
         if (!items.ContainsKey(item)) return 0;
         return items[item];
+    }
+
+    public ItemToCount[] GetItems()
+    {
+        ItemToCount[] output = new ItemToCount[items.Count];
+        int index = 0;
+        foreach (KeyValuePair<ItemSO, int> pair in items)
+        {
+            output[index++] = new ItemToCount()
+            {
+                Item = pair.Key,
+                Count = pair.Value
+            };
+        }
+        return output;
     }
 }
 

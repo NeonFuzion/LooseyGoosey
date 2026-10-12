@@ -53,6 +53,6 @@ public class RuntimeQuestProgressNode : RuntimeNode
 [System.Serializable]
 public class RuntimeItemCheckNode : RuntimeNode
 {
-    public string SuccessNodeID, FailNodeID;
+    public string SuccessNodeID, FailNodeID, ChecklistTitle;
     public List<ItemToCount> Ingredients = new List<ItemToCount>();
 }

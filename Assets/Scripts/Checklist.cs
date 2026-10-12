@@ -27,20 +27,20 @@ public class Checklist : MonoBehaviour
         
     }
 
-    public void CreateNewChecklist(QuestSO quest, QuestState questState)
+    public void CreateNewChecklist(string questName, ItemToCount[] ingredients, QuestState questState)
     {
-        titleText.SetText(quest.Name);
+        titleText.SetText(questName);
 
         foreach (Transform child in ingredientParent)
         {
             Destroy(child.gameObject);
         }
-        foreach (ItemToCount ingredient in quest.Tasks[0].Goods)
+        foreach (ItemToCount ingredient in ingredients)
         {
             GameObject checklistItem = Instantiate(checklistItemPrefab, ingredientParent);
             string checklistItemText = questState switch
             {
-                QuestState.InProgress => $"- {Player.InventoryInstance.GetItemCount(ingredient.Item)}/{ingredient.Count} {ingredient.Item} ",
+                QuestState.InProgress => $"- {Player.InventoryInstance.GetItemCount(ingredient.Item)}/{ingredient.Count} {ingredient.Item.Name}",
                 _ => $"- {ingredient.Count} {ingredient.Item.Name}"
             };
             checklistItem.GetComponent<TextMeshProUGUI>().SetText(checklistItemText);
